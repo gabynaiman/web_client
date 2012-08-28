@@ -74,4 +74,18 @@ describe WebClient::Base do
 
   end
 
+  context 'Error handling' do
+
+    it 'Invalid host' do
+      stub_request(:get, /.*/).to_raise(SocketError.new('getaddrinfo: No such host is known.'))
+      lambda { client.get }.should raise_error WebClient::Error
+    end
+
+    it 'Timeout' do
+      stub_request(:get, /.*/).to_timeout
+      lambda { client.get }.should raise_error WebClient::Error
+    end
+
+  end
+
 end
