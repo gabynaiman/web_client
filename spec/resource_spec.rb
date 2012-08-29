@@ -3,11 +3,11 @@ require 'spec_helper'
 
 describe WebClient::Resource do
 
-  let(:resource) { WebClient::Resource.new(:users, 'localhost', 3000) }
+  let(:resource) { WebClient::Resource.new(:users, HOST) }
 
   it 'index' do
     content = '[{"email":"jperez@mail.com","first_name":"Juan","id":1,"last_name":"Perez","organization":"Test"}]'
-    stub_request(:get, "http://localhost:3000/users.json").to_return(body: content)
+    stub_request(:get, "http://#{HOST}/users.json").to_return(body: content)
 
     response = resource.index
 
@@ -23,7 +23,7 @@ describe WebClient::Resource do
 
   it 'show' do
     content = '{"email":"jperez@mail.com","first_name":"Juan","id":1,"last_name":"Perez","organization":"Test"}'
-    stub_request(:get, "http://localhost:3000/users/1.json").to_return(body: content)
+    stub_request(:get, "http://#{HOST}/users/1.json").to_return(body: content)
 
     response = resource.show(1)
 
@@ -38,7 +38,7 @@ describe WebClient::Resource do
 
   it 'create' do
     content = '{"email":"jperez@mail.com","first_name":"Juan","id":1,"last_name":"Perez","organization":"Test"}'
-    stub_request(:post, "http://localhost:3000/users.json").to_return(body: content, status: 201)
+    stub_request(:post, "http://#{HOST}/users.json").to_return(body: content, status: 201)
 
     params = {
         'user[first_name]' => 'Juan',
@@ -58,7 +58,7 @@ describe WebClient::Resource do
   end
 
   it 'update' do
-    stub_request(:put, "http://localhost:3000/users/1.json").to_return(status: 204)
+    stub_request(:put, "http://#{HOST}/users/1.json").to_return(status: 204)
 
     params = {
         'user[first_name]' => 'Juan',
@@ -73,7 +73,7 @@ describe WebClient::Resource do
   end
 
   it 'destroy' do
-    stub_request(:delete, "http://localhost:3000/users/1.json").to_return(status: 204)
+    stub_request(:delete, "http://#{HOST}/users/1.json").to_return(status: 204)
 
     response = resource.destroy(1)
 

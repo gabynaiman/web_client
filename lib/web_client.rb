@@ -1,13 +1,10 @@
 require 'net/http'
 require 'active_support/all'
 require 'logger'
-
-require 'web_client/version'
-require 'web_client/error'
-require 'web_client/base'
-require 'web_client/resource'
+require 'json'
 
 module WebClient
+  HTTP_METHODS = [Net::HTTP::Get, Net::HTTP::Post, Net::HTTP::Put, Net::HTTP::Delete].freeze
 
   def self.logger
     @@logger ||= Logger.new($stdout)
@@ -19,3 +16,8 @@ module WebClient
   
 end
 
+require 'web_client/version'
+require 'web_client/error'
+require 'web_client/base'
+require 'web_client/resource'
+require 'web_client/json'

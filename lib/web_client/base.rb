@@ -8,25 +8,33 @@ module WebClient
       @http = HTTP.new(host, port)
     end
 
-    def get(path='/', data={}, &block)
-      request(HTTP::Get, path, data, &block)
-    end
+    WebClient::HTTP_METHODS.each do |http_method|
+      define_method http_method.to_s.demodulize.downcase do |path='/', data={}, &block|
+        request(http_method, path, data, &block)
+      end
 
-    def post(path='/', data={}, &block)
-      request(HTTP::Post, path, data, &block)
-    end
-
-    def put(path='/', data={}, &block)
-      request(HTTP::Put, path, data, &block)
-    end
-
-    def delete(path='/', data={}, &block)
-      request(HTTP::Delete, path, data, &block)
+      define_method "#{http_method.to_s.demodulize.downcase}!" do |path='/', data={}, &block|
+        request!(http_method, path, data, &block)
+      end
     end
 
     private
 
     def request(method_class, path='/', data=nil)
+      begin
+        response = request!(method_class, path, data)
+        if response.is_a? Net::HTTPSuccess
+          response
+        else
+          WebClient.logger.error "[WebClient] HTTPError #{response.code} | #{response.body}"
+          nil
+        end
+      rescue WebClient::Error
+        nil
+      end
+    end
+
+    def request!(method_class, path='/', data=nil)
       begin
         WebClient.logger.debug "[WebClient] #{method_class.to_s.demodulize.upcase} Url: http://#{@http.address}#{(@http.port != 80) ? ":#{@http.port}" : ''}#{path} | Params: #{data}"
         request = method_class.new(path)

@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-HOST = 'www.mock.dev'
-
 describe WebClient::Base do
 
   let(:client) { WebClient::Base.new(HOST) }
@@ -74,16 +72,21 @@ describe WebClient::Base do
 
   end
 
-  context 'Error handling' do
+  context 'Errors handling' do
 
-    it 'Invalid host' do
+    it 'Invalid host exception' do
       stub_request(:get, /.*/).to_raise(SocketError.new('getaddrinfo: No such host is known.'))
-      lambda { client.get }.should raise_error WebClient::Error
+      lambda { client.get! }.should raise_error WebClient::Error
     end
 
-    it 'Timeout' do
+    it 'Timeout exception' do
       stub_request(:get, /.*/).to_timeout
-      lambda { client.get }.should raise_error WebClient::Error
+      lambda { client.get! }.should raise_error WebClient::Error
+    end
+
+    it 'Wrapped exception' do
+      stub_request(:get, /.*/).to_timeout
+      client.get.should be_nil
     end
 
   end
