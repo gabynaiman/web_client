@@ -4,7 +4,14 @@ module WebClient
 
     attr_reader :http
 
-    def initialize(host, port=nil)
+    def initialize(*args)
+      if args.first.is_a? Hash
+        host = args[0]['host'] || args[0][:host]
+        port = args[0]['port'] || args[0][:port]
+      else
+        host = args[0]
+        port = args[1]
+      end
       @http = HTTP.new(host, port)
     end
 
