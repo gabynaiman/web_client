@@ -1,5 +1,5 @@
 module WebClient
-  class Resource < Base
+  class Resource < JSON
     attr_reader :resource
 
     def initialize(resource, *args)

@@ -19,5 +19,5 @@ end
 require 'web_client/version'
 require 'web_client/error'
 require 'web_client/base'
-require 'web_client/resource'
 require 'web_client/json'
+require 'web_client/resource'
