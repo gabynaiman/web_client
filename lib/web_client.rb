@@ -7,7 +7,7 @@ module WebClient
   HTTP_METHODS = [Net::HTTP::Get, Net::HTTP::Post, Net::HTTP::Put, Net::HTTP::Delete].freeze
 
   def self.logger
-    @@logger ||= Logger.new($stdout)
+    @@logger ||= defined?(Rails) ? Rails.logger : Logger.new($stdout)
   end
 
   def self.logger=(logger)
