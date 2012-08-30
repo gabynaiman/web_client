@@ -19,24 +19,11 @@ module WebClient
       define_method http_method.to_s.demodulize.downcase do |path='/', data={}, &block|
         request(http_method, path, data, &block)
       end
-
-      define_method "#{http_method.to_s.demodulize.downcase}!" do |path='/', data={}, &block|
-        request!(http_method, path, data, &block)
-      end
     end
 
     private
 
     def request(method_class, path='/', data=nil)
-      begin
-        response = request!(method_class, path, data)
-        response.is_a?(Net::HTTPSuccess) ? response : nil
-      rescue WebClient::Error
-        nil
-      end
-    end
-
-    def request!(method_class, path='/', data=nil)
       begin
         WebClient.logger.debug "[WebClient] #{method_class.to_s.demodulize.upcase} Url: http://#{@http.address}#{(@http.port != 80) ? ":#{@http.port}" : ''}#{path} | Params: #{data}"
         request = method_class.new(path)

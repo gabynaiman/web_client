@@ -76,17 +76,12 @@ describe WebClient::Base do
 
     it 'Invalid host exception' do
       stub_request(:get, /.*/).to_raise(SocketError.new('getaddrinfo: No such host is known.'))
-      lambda { client.get! }.should raise_error WebClient::Error
+      lambda { client.get }.should raise_error WebClient::Error
     end
 
     it 'Timeout exception' do
       stub_request(:get, /.*/).to_timeout
-      lambda { client.get! }.should raise_error WebClient::Error
-    end
-
-    it 'Wrapped exception' do
-      stub_request(:get, /.*/).to_timeout
-      client.get.should be_nil
+      lambda { client.get }.should raise_error WebClient::Error
     end
 
   end
