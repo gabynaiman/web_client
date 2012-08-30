@@ -7,8 +7,8 @@ module WebClient
       super(*args)
     end
 
-    def index(&block)
-      get("/#{resource}.json", &block)
+    def index(data={}, &block)
+      get("/#{resource}.json", data, &block)
     end
 
     def show(id, &block)
