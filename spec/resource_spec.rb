@@ -11,12 +11,14 @@ describe WebClient::Resource do
 
     response = resource.index
 
-    response.should be_a Array
-    response[0]['id'].should eq 1
-    response[0]['email'].should eq 'jperez@mail.com'
-    response[0]['first_name'].should eq 'Juan'
-    response[0]['last_name'].should eq 'Perez'
-    response[0]['organization'].should eq 'Test'
+    response.should be_a Net::HTTPOK
+    data = JSON.parse(response.body)
+    data.should be_a Array
+    data.first['id'].should eq 1
+    data.first['email'].should eq 'jperez@mail.com'
+    data.first['first_name'].should eq 'Juan'
+    data.first['last_name'].should eq 'Perez'
+    data.first['organization'].should eq 'Test'
   end
 
   it 'show' do
@@ -25,12 +27,14 @@ describe WebClient::Resource do
 
     response = resource.show(1)
 
-    response.should be_a Hash
-    response['id'].should eq 1
-    response['email'].should eq 'jperez@mail.com'
-    response['first_name'].should eq 'Juan'
-    response['last_name'].should eq 'Perez'
-    response['organization'].should eq 'Test'
+    response.should be_a Net::HTTPOK
+    data = JSON.parse(response.body)
+    data.should be_a Hash
+    data['id'].should eq 1
+    data['email'].should eq 'jperez@mail.com'
+    data['first_name'].should eq 'Juan'
+    data['last_name'].should eq 'Perez'
+    data['organization'].should eq 'Test'
   end
 
   it 'create' do
@@ -45,12 +49,14 @@ describe WebClient::Resource do
     }
     response = resource.create(params)
 
-    response.should be_a Hash
-    response['id'].should eq 1
-    response['email'].should eq 'jperez@mail.com'
-    response['first_name'].should eq 'Juan'
-    response['last_name'].should eq 'Perez'
-    response['organization'].should eq 'Test'
+    response.should be_a Net::HTTPCreated
+    data = JSON.parse(response.body)
+    data.should be_a Hash
+    data['id'].should eq 1
+    data['email'].should eq 'jperez@mail.com'
+    data['first_name'].should eq 'Juan'
+    data['last_name'].should eq 'Perez'
+    data['organization'].should eq 'Test'
   end
 
   it 'update' do
@@ -64,8 +70,8 @@ describe WebClient::Resource do
     }
     response = resource.update(1, params)
 
-    response.should be_a Hash
-    response.should be_empty
+    response.should be_a Net::HTTPNoContent
+    response.body.should be_nil
   end
 
   it 'destroy' do
@@ -73,7 +79,7 @@ describe WebClient::Resource do
 
     response = resource.destroy(1)
 
-    response.should be_a Hash
-    response.should be_empty
+    response.should be_a Net::HTTPNoContent
+    response.body.should be_nil
   end
 end

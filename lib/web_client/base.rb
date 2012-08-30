@@ -30,12 +30,7 @@ module WebClient
     def request(method_class, path='/', data=nil)
       begin
         response = request!(method_class, path, data)
-        if response.is_a? Net::HTTPSuccess
-          response
-        else
-          WebClient.logger.error "[WebClient] HTTPError #{response.code} | #{response.body}"
-          nil
-        end
+        response.is_a?(Net::HTTPSuccess) ? response : nil
       rescue WebClient::Error
         nil
       end
