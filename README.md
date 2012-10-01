@@ -18,7 +18,8 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    client = WebClient::Base.new 'localhost', 3000
+    client.get '/users'
 
 ## Contributing
 

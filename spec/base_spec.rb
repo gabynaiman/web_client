@@ -36,6 +36,47 @@ describe WebClient::Base do
 
   end
 
+  context 'Actions with headers' do
+
+    it 'get' do
+      stub_request(:get, "#{HOST}/get_stub").
+          with(headers: {content_type: 'application/json'}).
+          to_return(body: 'content')
+      response = client.get('/get_stub', nil, content_type: 'application/json')
+      response.should be_a Net::HTTPOK
+      response.body.should eq 'content'
+    end
+
+    it 'post' do
+      stub_request(:post, "#{HOST}/post_stub").
+          with(headers: {content_type: 'application/json'}).
+          with(body: 'form_data')
+      response = client.post('/post_stub', 'form_data', content_type: 'application/json')
+      response.should be_a Net::HTTPOK
+      response.body.should be_nil
+    end
+
+    it 'put' do
+      stub_request(:put, "#{HOST}/put_stub").
+          with(headers: {content_type: 'application/json'}).
+          with(body: 'form_data')
+      response = client.put('/put_stub', 'form_data', content_type: 'application/json')
+      response.should be_a Net::HTTPOK
+      response.body.should be_nil
+    end
+
+    it 'delete' do
+      stub_request(:delete, "#{HOST}/delete_stub").
+          with(headers: {content_type: 'application/json'}).
+          with(body: 'form_data')
+      response = client.delete('/delete_stub', 'form_data', content_type: 'application/json')
+      response.should be_a Net::HTTPOK
+      response.body.should be_nil
+    end
+
+
+  end
+
   context 'Actions with a block' do
 
     it 'get' do

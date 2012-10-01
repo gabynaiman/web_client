@@ -16,19 +16,20 @@ module WebClient
     end
 
     WebClient::HTTP_METHODS.each do |http_method|
-      define_method http_method.to_s.demodulize.downcase do |path='/', data={}, &block|
-        request(http_method, path, data, &block)
+      define_method http_method.to_s.demodulize.downcase do |path='/', data=nil, headers={}, &block|
+        request(http_method, path, data, headers, &block)
       end
     end
 
     private
 
-    def request(method_class, path='/', data=nil)
+    def request(method_class, path='/', data=nil, headers={})
       begin
-        WebClient.logger.debug "[WebClient] #{method_class.to_s.demodulize.upcase} Url: http://#{@http.address}#{(@http.port != 80) ? ":#{@http.port}" : ''}#{path} | Params: #{data}"
+        WebClient.logger.debug "[WebClient] #{method_class.to_s.demodulize.upcase} Url: http://#{@http.address}#{(@http.port != 80) ? ":#{@http.port}" : ''}#{path} | Params: #{data} | Headers: #{headers}"
         request = method_class.new(path)
         request.set_form_data(data) if data.is_a? Hash
         request.body = data if data.is_a? String
+        headers.each { |k, v| request.send("#{k}=", v) }
         yield(request, http) if block_given?
         response = http.request(request)
         WebClient.logger.debug "[WebClient] RESPONSE Status: #{response.code} | Content: #{response.body}"
