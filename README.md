@@ -18,8 +18,38 @@ Or install it yourself as:
 
 ## Usage
 
-    client = WebClient::Base.new 'localhost', 3000
-    client.get '/users'
+### Connection initialization
+
+    connection = WebClient::Connection.new 'localhost', 3000
+    #or
+    connection = WebClient::Connection.new host: 'localhost', port: 3000
+
+### Request types
+
+    connection.get '/users'
+    connection.get '/users/123', headers: {content_type: 'application/json'}
+    connection.post '/users', body: '...'
+    connection.put '/users/123', body: '...'
+    connection.delete '/users/123'
+
+### Raising request exceptions
+
+    connection.get url #=> nil
+    connection.get! url #=> raise WebClient::Error
+
+### Response info
+
+    response = connection.get url
+    response.code #=> 200
+    response.body #=> '....'
+    response.success? #=> true
+    response.type #=> Net::HTTPOK
+
+### Success block
+
+    json = connection.get url do |response|
+      JSON.parse response.body
+    end
 
 ## Contributing
 

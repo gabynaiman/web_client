@@ -3,11 +3,13 @@ require 'logger'
 require 'json'
 
 require 'web_client/version'
-require 'web_client/error'
 require 'web_client/extensions/string'
+require 'web_client/request'
+require 'web_client/response'
+require 'web_client/connection'
+require 'web_client/error'
 
 module WebClient
-  HTTP_METHODS = [Net::HTTP::Get, Net::HTTP::Post, Net::HTTP::Put, Net::HTTP::Delete].freeze
 
   def self.logger
     @@logger ||= defined?(Rails) ? Rails.logger : Logger.new($stdout)
@@ -18,5 +20,3 @@ module WebClient
   end
   
 end
-
-require 'web_client/base'

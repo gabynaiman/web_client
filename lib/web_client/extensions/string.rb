@@ -8,4 +8,8 @@ class String
     end
   end
 
+  def titleize
+    "#{self.to_s[0].upcase}#{self[1..-1]}"
+  end
+
 end
