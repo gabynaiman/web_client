@@ -1,10 +1,10 @@
 require 'net/http'
-require 'active_support/all'
 require 'logger'
 require 'json'
 
 require 'web_client/version'
 require 'web_client/error'
+require 'web_client/extensions/string'
 
 module WebClient
   HTTP_METHODS = [Net::HTTP::Get, Net::HTTP::Post, Net::HTTP::Put, Net::HTTP::Delete].freeze

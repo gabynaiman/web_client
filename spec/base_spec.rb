@@ -74,7 +74,6 @@ describe WebClient::Base do
       response.body.should be_nil
     end
 
-
   end
 
   context 'Actions with a block' do
