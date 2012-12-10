@@ -13,12 +13,20 @@ module WebClient
       @response.is_a? Net::HTTPSuccess
     end
 
-    def code
-      @response.code
+    def method_missing(method, *args, &block)
+      if @response.respond_to? method
+        @response.send method, *args, &block
+      else
+        super
+      end
     end
 
-    def body
-      @response.body
+    def methods
+      (super | @response.methods).uniq
+    end
+
+    def respond_to?(method)
+      super || @response.respond_to?(method)
     end
 
   end

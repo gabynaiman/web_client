@@ -7,6 +7,7 @@ describe WebClient::Response do
 
     response.code.should eq '200'
     response.body.should eq 'OK'
+    response.content_type.should eq 'text/html'
     response.type.should be Net::HTTPOK
     response.success?.should be_true
   end
@@ -16,6 +17,7 @@ describe WebClient::Response do
 
     response.code.should eq '404'
     response.body.should be_nil
+    response.content_type.should eq 'text/html'
     response.type.should be Net::HTTPNotFound
     response.success?.should be_false
   end
