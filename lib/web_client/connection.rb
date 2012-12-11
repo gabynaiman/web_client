@@ -55,7 +55,7 @@ module WebClient
     def request(request, &block)
       begin
         request!(request, &block)
-      rescue => e
+      rescue WebClient::Error => e
         nil
       end
     end
