@@ -18,7 +18,7 @@ module WebClient
     end
 
     def to_http
-      klass = eval("Net::HTTP::#{type.to_s.titleize}")
+      klass = eval("Net::HTTP::#{type.to_s.capitalize}")
       request = klass.new url
       request.set_form_data(body) if body.is_a? Hash
       request.body = body if body.is_a? String

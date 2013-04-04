@@ -3,7 +3,6 @@ require 'logger'
 require 'json'
 
 require 'web_client/version'
-require 'web_client/extensions/string'
 require 'web_client/request'
 require 'web_client/response'
 require 'web_client/connection'
