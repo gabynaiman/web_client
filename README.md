@@ -1,5 +1,7 @@
 # WebClient
 
+[![Build Status](https://travis-ci.org/gabynaiman/web_client.png?branch=master)](https://travis-ci.org/gabynaiman/web_client)
+
 Net::HTTP wrapper easy to use
 
 ## Installation
