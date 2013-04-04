@@ -10,7 +10,11 @@ module WebClient
     end
 
     def message
-      @inner_error.message
+      "#{type}: #{@inner_error.message}"
+    end
+
+    def to_s
+      message
     end
   end
 

@@ -39,6 +39,7 @@ module WebClient
           response
         end
       rescue Timeout::Error,
+          Errno::EHOSTUNREACH,
           Errno::EINVAL,
           Errno::ECONNRESET,
           EOFError,
@@ -47,7 +48,7 @@ module WebClient
           ProtocolError,
           SocketError,
           Errno::ECONNREFUSED => e
-        WebClient.logger.error "[WebClient] #{e.class}: #{e.message}"
+        WebClient.logger.error "[WebClient] #{e.class}: #{e.message}\nServer: #{host}:#{port}\nRequest: #{request.to_json}"
         raise Error, e
       end
     end
@@ -61,8 +62,8 @@ module WebClient
     end
 
     Request::TYPES.each do |request_type|
-      define_method "#{request_type}!" do |url, options={}|
-        request! Request.new(options.merge(type: request_type, url: url))
+      define_method "#{request_type}!" do |url, options={}, &block|
+        request! Request.new(options.merge(type: request_type, url: url)), &block
       end
 
       define_method request_type do |url, options={}, &block|

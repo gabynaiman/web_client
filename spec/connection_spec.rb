@@ -120,12 +120,12 @@ describe WebClient::Connection do
 
     it 'Invalid host exception' do
       stub_request(:get, /.*/).to_raise(SocketError.new('getaddrinfo: No such host is known.'))
-      lambda { connection.get! '/' }.should raise_error WebClient::Error
+      expect { connection.get! '/' }.to raise_error WebClient::Error
     end
 
     it 'Timeout exception' do
       stub_request(:get, /.*/).to_timeout
-      lambda { connection.get! '/' }.should raise_error WebClient::Error
+      expect { connection.get! '/' }.to raise_error WebClient::Error
     end
 
   end
@@ -157,6 +157,33 @@ describe WebClient::Connection do
       end
 
       json.should be_nil
+    end
+
+  end
+
+  context 'Unsafe mode' do
+
+    it 'Success response' do
+      stub_request(:get, "#{HOST}/get_stub").to_return(body: '{"id":1,"name":"John"}')
+      json = connection.get!('/get_stub') do |response|
+        JSON.parse response.body
+      end
+
+      json.should eq 'id' => 1, 'name' => 'John'
+    end
+
+    it 'Invalid response' do
+      stub_request(:get, "#{HOST}/get_stub").to_return(status: 404)
+      json = connection.get!('/get_stub') do |response|
+        JSON.parse response.body
+      end
+
+      json.should be_nil
+    end
+
+    it 'Request error' do
+      stub_request(:get, "#{HOST}/get_stub").to_timeout
+      expect { connection.get!('/get_stub') { |r| JSON.parse r.body } }.to raise_error WebClient::Error
     end
 
   end
