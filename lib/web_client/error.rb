@@ -1,6 +1,9 @@
 module WebClient
 
   class Error < StandardError
+  end
+
+  class ConnectionFail < Error
     def initialize(inner_error)
       @inner_error = inner_error
     end

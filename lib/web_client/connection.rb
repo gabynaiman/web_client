@@ -28,16 +28,14 @@ module WebClient
         WebClient.logger.debug "[WebClient] #{request.type.to_s.upcase} Url: http://#{host}#{(port != 80) ? ":#{port}" : ''}#{request.url} | Body: #{request.body} | Headers: #{request.headers}"
         response = Response.new @http.request(request.to_http)
         WebClient.logger.debug "[WebClient] RESPONSE Status: #{response.code} | Content: #{response.body}"
-        if block_given?
-          if response.success?
-            yield(response)
-          else
-            WebClient.logger.error "[WebClient] #{response.code} - Unexpected error\n#{response.body}"
-            nil
-          end
-        else
-          response
+
+        unless response.success?
+          WebClient.logger.error "[WebClient] #{response.code} - Unexpected error\n#{response.body}"
+          raise Error, response.body ? response.body.force_encoding('utf-8') : 'Unexpected error'
         end
+
+        block_given? ? yield(response) : response
+
       rescue Timeout::Error,
           Errno::EHOSTUNREACH,
           Errno::EINVAL,
@@ -49,7 +47,7 @@ module WebClient
           SocketError,
           Errno::ECONNREFUSED => e
         WebClient.logger.error "[WebClient] #{e.class}: #{e.message}\nServer: #{host}:#{port}\nRequest: #{request.to_json}"
-        raise Error, e
+        raise ConnectionFail, e
       end
     end
 

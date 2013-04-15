@@ -172,18 +172,14 @@ describe WebClient::Connection do
       json.should eq 'id' => 1, 'name' => 'John'
     end
 
-    it 'Invalid response' do
+    it 'Client error' do
       stub_request(:get, "#{HOST}/get_stub").to_return(status: 404)
-      json = connection.get!('/get_stub') do |response|
-        JSON.parse response.body
-      end
-
-      json.should be_nil
+      expect { connection.get!('/get_stub') }.to raise_error WebClient::Error
     end
 
-    it 'Request error' do
+    it 'Server error' do
       stub_request(:get, "#{HOST}/get_stub").to_timeout
-      expect { connection.get!('/get_stub') { |r| JSON.parse r.body } }.to raise_error WebClient::Error
+      expect { connection.get!('/get_stub') }.to raise_error WebClient::ConnectionFail
     end
 
   end
