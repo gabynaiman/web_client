@@ -1,3 +1,4 @@
+require 'coverage_helper'
 require 'webmock/rspec'
 require 'json'
 require 'web_client'

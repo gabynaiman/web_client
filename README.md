@@ -1,6 +1,9 @@
 # WebClient
 
 [![Build Status](https://travis-ci.org/gabynaiman/web_client.png?branch=master)](https://travis-ci.org/gabynaiman/web_client)
+[![Coverage Status](https://coveralls.io/repos/gabynaiman/web_client/badge.png?branch=master)](https://coveralls.io/r/gabynaiman/web_client?branch=master)
+[![Code Climate](https://codeclimate.com/github/gabynaiman/web_client.png)](https://codeclimate.com/github/gabynaiman/web_client)
+[![Dependency Status](https://gemnasium.com/gabynaiman/web_client.png)](https://gemnasium.com/gabynaiman/web_client)
 
 Net::HTTP wrapper easy to use
 
