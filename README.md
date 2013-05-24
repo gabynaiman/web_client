@@ -1,5 +1,6 @@
 # WebClient
 
+[![Gem Version](https://badge.fury.io/rb/web_client.png)](https://rubygems.org/gems/web_client)
 [![Build Status](https://travis-ci.org/gabynaiman/web_client.png?branch=master)](https://travis-ci.org/gabynaiman/web_client)
 [![Coverage Status](https://coveralls.io/repos/gabynaiman/web_client/badge.png?branch=master)](https://coveralls.io/r/gabynaiman/web_client?branch=master)
 [![Code Climate](https://codeclimate.com/github/gabynaiman/web_client.png)](https://codeclimate.com/github/gabynaiman/web_client)
